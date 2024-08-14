@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using SmtpServer.IO;
-using SmtpServer.Protocol;
+using Pop3Server.IO;
+using Pop3Server.Protocol;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     internal sealed class SmtpSessionContext : ISessionContext
     {

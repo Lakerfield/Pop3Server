@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     static class TaskExtensions
     {

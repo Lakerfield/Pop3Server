@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 
-namespace SmtpServer.StateMachine
+namespace Pop3Server.StateMachine
 {
     internal sealed class SmtpStateTable : IEnumerable
     {

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.ComponentModel
+namespace Pop3Server.ComponentModel
 {
     internal sealed class DisposableContainer<TInstance> : IDisposable
     {

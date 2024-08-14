@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     internal sealed class SmtpSessionManager
     {
         readonly SmtpServer _smtpServer;
         readonly HashSet<SmtpSessionHandle> _sessions = new HashSet<SmtpSessionHandle>();
         readonly object _sessionsLock = new object();
-        
+
         internal SmtpSessionManager(SmtpServer smtpServer)
         {
             _smtpServer = smtpServer;
@@ -57,7 +57,7 @@ namespace SmtpServer
             finally
             {
                 await handle.SessionContext.Pipe.Input.CompleteAsync();
-                
+
                 handle.SessionContext.Pipe.Dispose();
             }
         }
@@ -77,12 +77,12 @@ namespace SmtpServer
         internal Task WaitAsync()
         {
             IReadOnlyList<Task> tasks;
-            
+
             lock (_sessionsLock)
             {
                 tasks = _sessions.Select(session => session.CompletionTask).ToList();
             }
-            
+
             return Task.WhenAll(tasks);
         }
 
@@ -111,7 +111,7 @@ namespace SmtpServer
             }
 
             public SmtpSession Session { get; }
-            
+
             public SmtpSessionContext SessionContext { get; }
 
             public Task CompletionTask { get; set; }

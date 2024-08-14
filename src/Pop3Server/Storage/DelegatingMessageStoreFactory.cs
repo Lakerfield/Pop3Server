@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.Storage
+namespace Pop3Server.Storage
 {
     public sealed class DelegatingMessageStoreFactory : IMessageStoreFactory
     {

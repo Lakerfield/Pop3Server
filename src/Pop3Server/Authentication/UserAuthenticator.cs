@@ -1,7 +1,7 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmtpServer.Authentication
+namespace Pop3Server.Authentication
 {
     public abstract class UserAuthenticator : IUserAuthenticator
     {

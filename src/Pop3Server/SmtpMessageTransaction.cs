@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SmtpServer.Mail;
+using Pop3Server.Mail;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     internal sealed class SmtpMessageTransaction : IMessageTransaction
     {

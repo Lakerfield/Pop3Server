@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Text;
 
-namespace SmtpServer.Text
+namespace Pop3Server.Text
 {
     internal static class StringUtil
     {

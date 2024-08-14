@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using SmtpServer.Mail;
+using System.Collections.Generic;
+using Pop3Server.Mail;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     public interface IMessageTransaction
     {

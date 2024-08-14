@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.ComponentModel;
-using SmtpServer.Net;
+using Pop3Server.ComponentModel;
+using Pop3Server.Net;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     public class SmtpServer
     {

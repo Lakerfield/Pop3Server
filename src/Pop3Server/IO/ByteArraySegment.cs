@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Buffers;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     internal sealed class ByteArraySegment : ReadOnlySequenceSegment<byte>
     {

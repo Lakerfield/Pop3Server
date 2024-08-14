@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     public interface ISmtpServerOptions
     {

@@ -1,4 +1,4 @@
-﻿namespace SmtpServer
+namespace Pop3Server
 {
     public sealed class AuthenticationContext
     {

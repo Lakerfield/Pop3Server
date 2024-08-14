@@ -1,6 +1,6 @@
 using System;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public abstract class SmtpCommandVisitor
     {

@@ -1,4 +1,4 @@
-namespace SmtpServer.StateMachine
+namespace Pop3Server.StateMachine
 {
     internal enum SmtpStateId
     {

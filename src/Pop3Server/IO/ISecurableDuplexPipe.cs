@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO.Pipelines;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     public interface ISecurableDuplexPipe : IDuplexPipe, IDisposable
     {

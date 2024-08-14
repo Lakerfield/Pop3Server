@@ -3,9 +3,9 @@ using System.IO.Pipelines;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     public static class PipeWriterExtensions
     {

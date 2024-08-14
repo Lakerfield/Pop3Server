@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace SmtpServer.Text
+namespace Pop3Server.Text
 {
     [DebuggerDisplay("[{Kind}] {Text}")]
     public readonly ref struct Token

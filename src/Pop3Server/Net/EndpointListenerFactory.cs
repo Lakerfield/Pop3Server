@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 
-namespace SmtpServer.Net
+namespace Pop3Server.Net
 {
     public class EndpointListenerFactory : IEndpointListenerFactory
     {

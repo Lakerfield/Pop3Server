@@ -1,9 +1,9 @@
-﻿using System.Buffers;
+using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 
-namespace SmtpServer.Storage
+namespace Pop3Server.Storage
 {
     public interface IMessageStore
     {

@@ -1,6 +1,6 @@
-﻿using SmtpServer.ComponentModel;
+using Pop3Server.ComponentModel;
 
-namespace SmtpServer.Storage
+namespace Pop3Server.Storage
 {
     public interface IMessageStoreFactory : ISessionContextInstanceFactory<IMessageStore> { }
 }

@@ -1,10 +1,10 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Sockets;
-using SmtpServer.IO;
+using Pop3Server.IO;
 using System.IO;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class QuitCommand : SmtpCommand
     {

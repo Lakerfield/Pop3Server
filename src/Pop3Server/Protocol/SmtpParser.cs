@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using SmtpServer.IO;
-using SmtpServer.Mail;
-using SmtpServer.Text;
+using Pop3Server.IO;
+using Pop3Server.Mail;
+using Pop3Server.Text;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class SmtpParser
     {

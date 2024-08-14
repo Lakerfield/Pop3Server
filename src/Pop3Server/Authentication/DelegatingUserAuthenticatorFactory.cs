@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.Authentication
+namespace Pop3Server.Authentication
 {
     public sealed class DelegatingUserAuthenticatorFactory : IUserAuthenticatorFactory
     {

@@ -1,16 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 using System.Reflection;
-using SmtpServer.IO;
+using Pop3Server.IO;
 using System.IO.Pipelines;
-using SmtpServer.StateMachine;
-using SmtpServer.ComponentModel;
+using Pop3Server.StateMachine;
+using Pop3Server.ComponentModel;
 using System.Buffers;
 using System.Collections.Generic;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     internal sealed class SmtpSession
     {

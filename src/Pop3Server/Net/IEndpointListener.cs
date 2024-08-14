@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.IO;
+using Pop3Server.IO;
 
-namespace SmtpServer.Net
+namespace Pop3Server.Net
 {
     public interface IEndpointListener : IDisposable
     {

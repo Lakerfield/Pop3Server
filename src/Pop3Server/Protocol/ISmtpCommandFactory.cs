@@ -1,8 +1,8 @@
-using SmtpServer.Mail;
+using Pop3Server.Mail;
 using System.Collections.Generic;
 using System.Net;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public interface ISmtpCommandFactory
     {

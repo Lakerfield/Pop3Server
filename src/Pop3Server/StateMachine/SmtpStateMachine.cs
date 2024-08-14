@@ -1,7 +1,7 @@
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 using System.Linq;
 
-namespace SmtpServer.StateMachine
+namespace Pop3Server.StateMachine
 {
     internal sealed class SmtpStateMachine 
     {

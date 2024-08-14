@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Globalization;
 
-namespace SmtpServer.Mail
+namespace Pop3Server.Mail
 {
     public interface IMailbox
     {

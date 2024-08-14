@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     public abstract class PipelineException : Exception { }
 

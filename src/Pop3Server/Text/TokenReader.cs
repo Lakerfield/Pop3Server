@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Buffers;
 
-namespace SmtpServer.Text
+namespace Pop3Server.Text
 {
     public ref struct TokenReader
     {

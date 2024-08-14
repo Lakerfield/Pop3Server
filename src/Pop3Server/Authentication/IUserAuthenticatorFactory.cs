@@ -1,6 +1,6 @@
-﻿using SmtpServer.ComponentModel;
+using Pop3Server.ComponentModel;
 
-namespace SmtpServer.Authentication
+namespace Pop3Server.Authentication
 {
     public interface IUserAuthenticatorFactory : ISessionContextInstanceFactory<IUserAuthenticator> { }
 }
