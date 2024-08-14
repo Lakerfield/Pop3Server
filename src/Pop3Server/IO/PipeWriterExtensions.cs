@@ -76,6 +76,7 @@ namespace Pop3Server.IO
                         writer.WriteLine($"+OK {response.Message}");
                     break;
                 case SmtpReplyCode.Err:
+                case SmtpReplyCode.AuthenticationFailed:
                     writer.WriteLine($"-ERR {response.Message}");
                     break;
                 default:

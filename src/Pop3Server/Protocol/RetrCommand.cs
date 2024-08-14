@@ -1,8 +1,11 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Pop3Server.ComponentModel;
 using Pop3Server.IO;
+using Pop3Server.Storage;
 
 namespace Pop3Server.Protocol
 {
@@ -29,8 +32,17 @@ namespace Pop3Server.Protocol
         /// if the current state is to be maintained.</returns>
         internal override async Task<bool> ExecuteAsync(SmtpSessionContext context, CancellationToken cancellationToken)
         {
-          var bytes = File.ReadAllBytes(@"E:\xx-end.edi");
+            var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
+            using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
 
+            if (Message < 1)
+                return false;
+            if (Message > context.Transaction.Messages.Count)
+                return false;
+
+            var message = context.Transaction.Messages[Message - 1];
+
+            var bytes = await messageStoreContainer.Instance.GetAsync(context, message, cancellationToken).ConfigureAwait(false);
 
             await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, @$"{bytes.Length} octets
 {System.Text.Encoding.ASCII.GetString(bytes)}

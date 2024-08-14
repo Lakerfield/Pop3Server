@@ -5,8 +5,9 @@ namespace Pop3Server.StateMachine
         None = 0,
         Authorization = 1,
         AuthorizationSecure = 2,
-        Transaction = 3,
-        Update = 4,
+        AuthorizationWaitForPassword = 3,
+        LoggedIn = 5,
+        Update = 6,
 
 
         //Initialized = 1,

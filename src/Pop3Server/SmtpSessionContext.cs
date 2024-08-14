@@ -38,7 +38,7 @@ namespace Pop3Server
             ServiceProvider = serviceProvider;
             ServerOptions = options;
             EndpointDefinition = endpointDefinition;
-            Transaction = new SmtpMessageTransaction();
+            Transaction = new Pop3Transaction();
             Properties = new Dictionary<string, object>();
         }
 
@@ -100,7 +100,7 @@ namespace Pop3Server
         /// <summary>
         /// Gets the current transaction.
         /// </summary>
-        public SmtpMessageTransaction Transaction { get; }
+        public Pop3Transaction Transaction { get; }
         
         /// <summary>
         /// Returns the authentication context.

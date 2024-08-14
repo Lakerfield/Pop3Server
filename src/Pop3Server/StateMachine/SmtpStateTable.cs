@@ -15,24 +15,28 @@ namespace Pop3Server.StateMachine
                 { ProxyCommand.Command },
                 { CapaCommand.Command },
                 { StlsCommand.Command, CanAcceptStls, SmtpStateId.AuthorizationSecure },
-                { UserCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false },
-                { PassCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false },
-                { AuthCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false },
+                { UserCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false, SmtpStateId.AuthorizationWaitForPassword },
+                { AuthCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false, SmtpStateId.LoggedIn },
             },
             new SmtpState(SmtpStateId.AuthorizationSecure)
             {
                 { QuitCommand.Command },
                 { CapaCommand.Command },
-                { UserCommand.Command, context => context.Authentication.IsAuthenticated == false },
-                { PassCommand.Command },//, SmtpStateId.Transaction },
-                { AuthCommand.Command, context => context.Authentication.IsAuthenticated == false },
-            //},
-            //new SmtpState(SmtpStateId.Transaction)
-            //{
-            //    { NoopCommand.Command },
-            //    { RsetCommand.Command },
-            //    { QuitCommand.Command },
-            //    { CapaCommand.Command },
+                { UserCommand.Command, context => context.Authentication.IsAuthenticated == false, SmtpStateId.AuthorizationWaitForPassword },
+                { AuthCommand.Command, context => context.Authentication.IsAuthenticated == false, SmtpStateId.LoggedIn },
+            },
+            new SmtpState(SmtpStateId.AuthorizationWaitForPassword)
+            {
+                { QuitCommand.Command },
+                { UserCommand.Command },
+                { PassCommand.Command, SmtpStateId.LoggedIn },
+            },
+            new SmtpState(SmtpStateId.LoggedIn)
+            {
+                { NoopCommand.Command },
+                //{ RsetCommand.Command },
+                { QuitCommand.Command },
+                { CapaCommand.Command },
                 { StatCommand.Command },
                 { ListCommand.Command },
                 { RetrCommand.Command },

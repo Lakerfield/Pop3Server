@@ -81,7 +81,7 @@ namespace Pop3Server.Protocol
 
             await context.Pipe.Output.WriteReplyAsync(SmtpResponse.AuthenticationSuccessful, cancellationToken).ConfigureAwait(false);
 
-            context.Authentication = new AuthenticationContext(_user);
+            context.Authentication = new AuthenticationContext(true, _user);
             context.RaiseSessionAuthenticated();
 
             return true;
