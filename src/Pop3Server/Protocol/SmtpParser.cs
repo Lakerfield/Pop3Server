@@ -480,8 +480,14 @@ namespace Pop3Server.Protocol
             return true;
           }
 
-          errorResponse = SmtpResponse.SyntaxError;
-          return false;
+          if (TryMakeEnd(ref reader) == false)
+          {
+              errorResponse = SmtpResponse.SyntaxError;
+              return false;
+          }
+
+          command = _smtpCommandFactory.CreateList(0);
+          return true;
         }
 
         /// <summary>
@@ -869,7 +875,7 @@ namespace Pop3Server.Protocol
             // ABNF
             // proxy            = "PROXY" space ( unknown-proxy | tcp4-proxy | tcp6-proxy )
             // unknown-proxy    = "UNKNOWN"
-            // tcp4-proxy       = "TCP4" space ipv4-address-literal space ipv4-address-literal space ip-port-number space ip-port-number   
+            // tcp4-proxy       = "TCP4" space ipv4-address-literal space ipv4-address-literal space ip-port-number space ip-port-number
             // tcp6-proxy       = "TCP6" space ipv6-address-literal space ipv6-address-literal space ip-port-number space ip-port-number
             // space            = " "
             // ip-port          = wnum
@@ -1230,7 +1236,7 @@ namespace Pop3Server.Protocol
             static Mailbox CreateMailbox(ReadOnlySequence<byte> localpart, ReadOnlySequence<byte> domainOrAddress)
             {
                 var user = Regex.Unescape(StringUtil.Create(localpart, Encoding.UTF8).Trim('"'));
-                
+
                 return new Mailbox(user, StringUtil.Create(domainOrAddress));
             }
         }
@@ -2059,7 +2065,7 @@ namespace Pop3Server.Protocol
             {
                 reader.Take();
             }
-            
+
             return true;
         }
 
@@ -2090,7 +2096,7 @@ namespace Pop3Server.Protocol
         public bool TryMakeBase64Chars(ref TokenReader reader)
         {
             var token = reader.Take();
-            
+
             switch (token.Kind)
             {
                 case TokenKind.Text:

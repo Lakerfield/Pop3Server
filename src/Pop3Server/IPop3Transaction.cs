@@ -25,5 +25,6 @@ namespace Pop3Server
     {
         string Id { get; set; }
         int Size { get; set; }
+        bool DeleteRequested { get; set; }
     }
 }

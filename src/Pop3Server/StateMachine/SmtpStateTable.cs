@@ -16,22 +16,22 @@ namespace Pop3Server.StateMachine
                 { CapaCommand.Command },
                 { StlsCommand.Command, CanAcceptStls, SmtpStateId.AuthorizationSecure },
                 { UserCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false, SmtpStateId.AuthorizationWaitForPassword },
-                { AuthCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false, SmtpStateId.LoggedIn },
+                //{ AuthCommand.Command, context => context.EndpointDefinition.AllowUnsecureAuthentication && context.Authentication.IsAuthenticated == false, SmtpStateId.Transaction },
             },
             new SmtpState(SmtpStateId.AuthorizationSecure)
             {
                 { QuitCommand.Command },
                 { CapaCommand.Command },
                 { UserCommand.Command, context => context.Authentication.IsAuthenticated == false, SmtpStateId.AuthorizationWaitForPassword },
-                { AuthCommand.Command, context => context.Authentication.IsAuthenticated == false, SmtpStateId.LoggedIn },
+                //{ AuthCommand.Command, context => context.Authentication.IsAuthenticated == false, SmtpStateId.Transaction },
             },
             new SmtpState(SmtpStateId.AuthorizationWaitForPassword)
             {
                 { QuitCommand.Command },
                 { UserCommand.Command },
-                { PassCommand.Command, SmtpStateId.LoggedIn },
+                { PassCommand.Command, SmtpStateId.Transaction },
             },
-            new SmtpState(SmtpStateId.LoggedIn)
+            new SmtpState(SmtpStateId.Transaction)
             {
                 { NoopCommand.Command },
                 //{ RsetCommand.Command },

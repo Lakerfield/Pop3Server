@@ -9,6 +9,7 @@ using Pop3Server.StateMachine;
 using Pop3Server.ComponentModel;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pop3Server
 {
@@ -132,7 +133,6 @@ namespace Pop3Server
                         return Task.CompletedTask;
                     },
                     cancellationTokenSource.Token).ConfigureAwait(false);
-
                 return command;
             }
             catch (OperationCanceledException)
@@ -159,7 +159,7 @@ namespace Pop3Server
         /// <returns>The response that wraps the original response with the additional error information.</returns>
         static SmtpResponse CreateErrorResponse(SmtpResponse response, int retries)
         {
-            return new SmtpResponse(response.ReplyCode, $"-ERR {response.Message}, {retries} retry(ies) remaining.");
+            return new SmtpResponse(SmtpReplyCode.Err, $"{response.Lines.FirstOrDefault()}, {retries} retry(ies) remaining.");
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Pop3Server
             var version = typeof(SmtpSession).GetTypeInfo().Assembly.GetName().Version;
 
             _context.Pipe.Output.WriteLine($"+OK POP3 server {_context.ServerOptions.ServerName} v{version} ready");
-            
+
             return _context.Pipe.Output.FlushAsync(cancellationToken);
         }
     }

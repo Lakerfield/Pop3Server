@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Pipelines;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +11,13 @@ namespace Pop3Server.IO
 {
     public static class PipeWriterExtensions
     {
+
+        internal static void WriteLines(this PipeWriter writer, IEnumerable<string> lines)
+        {
+            foreach (var line in lines)
+                writer.WriteLine(line);
+        }
+
         /// <summary>
         /// Write a line of text to the pipe.
         /// </summary>
@@ -67,21 +76,27 @@ namespace Pop3Server.IO
                 throw new ArgumentNullException(nameof(writer));
             }
 
+            var responseCode = string.Empty;
             switch (response.ReplyCode)
             {
                 case SmtpReplyCode.Ok:
-                    if (string.IsNullOrWhiteSpace(response.Message))
-                        writer.WriteLine("+OK");
-                    else
-                        writer.WriteLine($"+OK {response.Message}");
+                    responseCode = "+OK";
                     break;
                 case SmtpReplyCode.Err:
                 case SmtpReplyCode.AuthenticationFailed:
-                    writer.WriteLine($"-ERR {response.Message}");
+                    responseCode = "-ERR";
                     break;
                 default:
-                    writer.WriteLine($"-TODO {response.ReplyCode} {response.Message}");
+                    responseCode = "-TODO";
                     break;
+            }
+            if (response.Lines.Length == 0)
+                writer.WriteLine(responseCode);
+            if (response.Lines.Length >= 1)
+            {
+                writer.WriteLine($"{responseCode} {response.Lines[0]}");
+                if (response.Lines.Length >= 2)
+                    writer.WriteLines(response.Lines.Skip(1).ToArray());
             }
 
             return writer.FlushAsync(cancellationToken);

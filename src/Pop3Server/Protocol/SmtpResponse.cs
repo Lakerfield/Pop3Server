@@ -22,10 +22,18 @@ namespace Pop3Server.Protocol
         /// </summary>
         /// <param name="replyCode">The reply code.</param>
         /// <param name="message">The reply message.</param>
-        public SmtpResponse(SmtpReplyCode replyCode, string message = null)
+        public SmtpResponse(SmtpReplyCode replyCode, string? message = null)
         {
             ReplyCode = replyCode;
-            Message = message;
+            if (string.IsNullOrWhiteSpace(message))
+                Lines = new string[] { };
+            else
+                Lines = new string[] { message };
+        }
+        public SmtpResponse(SmtpReplyCode replyCode, params string[] message)
+        {
+            ReplyCode = replyCode;
+            Lines = message;
         }
 
         /// <summary>
@@ -36,6 +44,6 @@ namespace Pop3Server.Protocol
         /// <summary>
         /// Gets the response message.
         /// </summary>
-        public string Message { get; }
+        public string[] Lines { get; }
     }
 }
