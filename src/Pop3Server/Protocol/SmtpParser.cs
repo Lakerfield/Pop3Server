@@ -702,8 +702,14 @@ namespace Pop3Server.Protocol
             return true;
           }
 
-          errorResponse = SmtpResponse.SyntaxError;
-          return false;
+          if (TryMakeEnd(ref reader) == false)
+          {
+              errorResponse = SmtpResponse.SyntaxError;
+              return false;
+          }
+
+          command = _smtpCommandFactory.CreateUidl(0);
+          return true;
         }
 
         /// <summary>
