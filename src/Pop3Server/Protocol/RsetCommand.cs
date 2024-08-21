@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Pop3Server.IO;
@@ -22,9 +23,14 @@ namespace Pop3Server.Protocol
         /// if the current state is to be maintained.</returns>
         internal override async Task<bool> ExecuteAsync(SmtpSessionContext context, CancellationToken cancellationToken)
         {
-            context.Transaction.Reset();
+            foreach (var message in context.Transaction.Messages)
+                if (message.DeleteRequested)
+                    message.DeleteRequested = false;
 
-            await context.Pipe.Output.WriteReplyAsync(SmtpResponse.Ok, cancellationToken).ConfigureAwait(false);
+            var count = context.Transaction.Messages.Count;
+            var totalSize = context.Transaction.Messages.Sum(m => m.Size);
+
+            await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, @$"maildrop has {count} messages ({totalSize} octets)"), cancellationToken).ConfigureAwait(false);
 
             return true;
         }

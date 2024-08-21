@@ -46,7 +46,7 @@ namespace Pop3Server.Protocol
 
             //+OK message follows
 
-            var bytes = await messageStoreContainer.Instance.GetAsync(context, message, cancellationToken).ConfigureAwait(false);
+            var bytes = await messageStoreContainer.Instance.GetAsync(context, context.Transaction.Mailbox, message, cancellationToken).ConfigureAwait(false);
 
             await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, @$"message follows {bytes.Length} octets"),cancellationToken).ConfigureAwait(false);
 

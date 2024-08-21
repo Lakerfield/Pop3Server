@@ -10,6 +10,7 @@ using Pop3Server.ComponentModel;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
+using Pop3Server.Storage;
 
 namespace Pop3Server
 {
@@ -67,6 +68,17 @@ namespace Pop3Server
 
                     if (command == null)
                     {
+                        if (context.Transaction.HasLockedMailbox)
+                        {
+                            var mailbox = context.Transaction.Mailbox;
+                            if (mailbox != null)
+                            {
+                                var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
+                                using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
+                                await messageStoreContainer.Instance.UnlockMailboxAsync(context, mailbox, CancellationToken.None);
+                            }
+                        }
+
                         return;
                     }
 
@@ -139,10 +151,10 @@ namespace Pop3Server
             {
                 if (timeout.IsCancellationRequested)
                 {
-                    throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.ServiceClosingTransmissionChannel, "Timeout while waiting for input."), true);
+                    throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.Err, "Timeout while waiting for input."), true);
                 }
 
-                throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.ServiceClosingTransmissionChannel, "The session has be cancelled."), true);
+                throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.Err, "The session has be cancelled."), true);
             }
             finally
             {

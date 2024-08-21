@@ -34,7 +34,7 @@ namespace Pop3Server.StateMachine
             new SmtpState(SmtpStateId.Transaction)
             {
                 { NoopCommand.Command },
-                //{ RsetCommand.Command },
+                { RsetCommand.Command },
                 { QuitCommand.Command },
                 { CapaCommand.Command },
                 { StatCommand.Command },

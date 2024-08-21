@@ -37,6 +37,7 @@ namespace Pop3Server.StateMachine
                 return false;
             }
 
+            _context.Transaction.CapaState = _state.StateId;
             _transition = transition;
             return true;
         }

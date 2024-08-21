@@ -1,8 +1,10 @@
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Pop3Server.Authentication;
 using Pop3Server.ComponentModel;
 using Pop3Server.IO;
+using Pop3Server.Mail;
 using Pop3Server.Storage;
 
 namespace Pop3Server.Protocol
@@ -33,10 +35,9 @@ namespace Pop3Server.Protocol
             var user = context.Authentication.User ?? "";
 
             var userAuthenticator = context.ServiceProvider.GetService<IUserAuthenticatorFactory, IUserAuthenticator>(context, UserAuthenticator.Default);
-
-            using (var container = new DisposableContainer<IUserAuthenticator>(userAuthenticator))
+            using (var userAuthenticatorContainer = new DisposableContainer<IUserAuthenticator>(userAuthenticator))
             {
-                if (await container.Instance.AuthenticateAsync(context, user, Password, cancellationToken).ConfigureAwait(false) == false)
+                if (await userAuthenticatorContainer.Instance.AuthenticateAsync(context, user, Password, cancellationToken).ConfigureAwait(false) == false)
                 {
                     var remaining = context.ServerOptions.MaxAuthenticationAttempts - ++context.AuthenticationAttempts;
                     var response = new SmtpResponse(SmtpReplyCode.AuthenticationFailed, $"authentication failed, {remaining} attempt(s) remaining.");
@@ -52,16 +53,24 @@ namespace Pop3Server.Protocol
                 }
             }
 
-            await context.Pipe.Output.WriteReplyAsync(SmtpResponse.Ok, cancellationToken).ConfigureAwait(false);
+            context.Transaction.Mailbox = new Mailbox(user);
+
+            var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
+            using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
+
+            if (await messageStoreContainer.Instance.LockMailboxAsync(context, context.Transaction.Mailbox, cancellationToken).ConfigureAwait(false) == false)
+            {
+                await context.Pipe.Output.WriteReplyAsync(SmtpResponse.UnableToLockMailbox, cancellationToken).ConfigureAwait(false);
+                return false;
+            }
+
+            context.Transaction.HasLockedMailbox = true;
+
+            await context.Pipe.Output.WriteReplyAsync(SmtpResponse.MailboxLocked, cancellationToken).ConfigureAwait(false);
 
             context.Authentication = new AuthenticationContext(true, user);
             context.RaiseSessionAuthenticated();
 
-
-            // TODO Lock
-
-            var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
-            using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
             var messages = await messageStoreContainer.Instance.GetMessagesAsync(context, context.Transaction.Mailbox, cancellationToken).ConfigureAwait(false);
 
             foreach (var message in messages)

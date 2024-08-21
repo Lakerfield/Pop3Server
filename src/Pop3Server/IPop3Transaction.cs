@@ -8,7 +8,7 @@ namespace Pop3Server
         /// <summary>
         /// Gets or sets the current mailbox.
         /// </summary>
-        IMailbox Mailbox { get; set; }
+        IMailbox? Mailbox { get; set; }
 
         /// <summary>
         /// Gets the collection of messages in the mailboxes.

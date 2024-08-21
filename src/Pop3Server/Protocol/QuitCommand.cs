@@ -1,8 +1,12 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using Pop3Server.IO;
 using System.IO;
+using System.Linq;
+using Pop3Server.ComponentModel;
+using Pop3Server.Storage;
 
 namespace Pop3Server.Protocol
 {
@@ -28,7 +32,41 @@ namespace Pop3Server.Protocol
 
             try
             {
-                await context.Pipe.Output.WriteReplyAsync(SmtpResponse.ServiceClosingTransmissionChannel, cancellationToken).ConfigureAwait(false);
+                var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
+                using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
+
+                var response = SmtpResponse.QuitOk;
+                try
+                {
+                    if (context.Transaction.Mailbox != null)
+                    {
+                        try
+                        {
+                            var deletedMessages = context.Transaction.Messages.Where(m => m.DeleteRequested).ToArray();
+                            if (deletedMessages.Length > 0)
+                            {
+                                await messageStoreContainer.Instance
+                                    .DeleteAsync(context, context.Transaction.Mailbox, deletedMessages, cancellationToken)
+                                    .ConfigureAwait(false);
+                            }
+                        }
+                        catch
+                        {
+                            response = SmtpResponse.QuitErr;
+                            throw;
+                        }
+                    }
+                }
+                finally
+                {
+                    if (context.Transaction.HasLockedMailbox && context.Transaction.Mailbox != null)
+                    {
+                        await messageStoreContainer.Instance.UnlockMailboxAsync(context, context.Transaction.Mailbox, cancellationToken);
+                        context.Transaction.HasLockedMailbox = false;
+                    }
+
+                    await context.Pipe.Output.WriteReplyAsync(response, cancellationToken).ConfigureAwait(false);
+                }
             }
             catch (IOException ioException)
             {

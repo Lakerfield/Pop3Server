@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Pop3Server.Mail;
+using Pop3Server.StateMachine;
 
 namespace Pop3Server
 {
@@ -19,7 +20,9 @@ namespace Pop3Server
         /// <summary>
         /// Gets or sets the mailbox that is sending the message.
         /// </summary>
-        public IMailbox Mailbox { get; set; }
+        public IMailbox? Mailbox { get; set; }
+
+        public bool HasLockedMailbox { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of mailboxes that the message is to be delivered to.
@@ -30,5 +33,7 @@ namespace Pop3Server
         /// The list of parameters that were supplied by the client.
         /// </summary>
         public IReadOnlyDictionary<string, string> Parameters { get; set; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+
+        public SmtpStateId CapaState { get; set; }
     }
 }
