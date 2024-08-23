@@ -33,7 +33,7 @@ namespace Pop3Server
         /// <param name="serviceProvider">The service provider instance.</param>
         /// <param name="options">The server options.</param>
         /// <param name="endpointDefinition">The endpoint definition.</param>
-        internal SmtpSessionContext(IServiceProvider serviceProvider, ISmtpServerOptions options, IEndpointDefinition endpointDefinition)
+        internal SmtpSessionContext(IServiceProvider serviceProvider, IPop3ServerOptions options, IEndpointDefinition endpointDefinition)
         {
             ServiceProvider = serviceProvider;
             ServerOptions = options;
@@ -85,7 +85,7 @@ namespace Pop3Server
         /// <summary>
         /// Gets the options that the server was created with.
         /// </summary>
-        public ISmtpServerOptions ServerOptions { get; }
+        public IPop3ServerOptions ServerOptions { get; }
 
         /// <summary>
         /// Gets the endpoint definition.

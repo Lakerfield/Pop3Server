@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Pop3Server
 {
-    internal sealed class SmtpSessionManager
+    internal sealed class Pop3SessionManager
     {
-        readonly SmtpServer _smtpServer;
-        readonly HashSet<SmtpSessionHandle> _sessions = new HashSet<SmtpSessionHandle>();
+        readonly Pop3Server _pop3Server;
+        readonly HashSet<Pop3SessionHandle> _sessions = new HashSet<Pop3SessionHandle>();
         readonly object _sessionsLock = new object();
 
-        internal SmtpSessionManager(SmtpServer smtpServer)
+        internal Pop3SessionManager(Pop3Server pop3Server)
         {
-            _smtpServer = smtpServer;
+            _pop3Server = pop3Server;
         }
 
         internal void Run(SmtpSessionContext sessionContext, CancellationToken cancellationToken)
         {
-            var handle = new SmtpSessionHandle(new SmtpSession(sessionContext), sessionContext);
+            var handle = new Pop3SessionHandle(new SmtpSession(sessionContext), sessionContext);
             Add(handle);
 
             handle.CompletionTask = RunAsync(handle, cancellationToken);
@@ -32,7 +32,7 @@ namespace Pop3Server
                 });
         }
 
-        async Task RunAsync(SmtpSessionHandle handle, CancellationToken cancellationToken)
+        async Task RunAsync(Pop3SessionHandle handle, CancellationToken cancellationToken)
         {
             try
             {
@@ -40,19 +40,19 @@ namespace Pop3Server
 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                _smtpServer.OnSessionCreated(new SessionEventArgs(handle.SessionContext));
+                _pop3Server.OnSessionCreated(new SessionEventArgs(handle.SessionContext));
 
                 await handle.Session.RunAsync(cancellationToken);
 
-                _smtpServer.OnSessionCompleted(new SessionEventArgs(handle.SessionContext));
+                _pop3Server.OnSessionCompleted(new SessionEventArgs(handle.SessionContext));
             }
             catch (OperationCanceledException)
             {
-                _smtpServer.OnSessionCancelled(new SessionEventArgs(handle.SessionContext));
+                _pop3Server.OnSessionCancelled(new SessionEventArgs(handle.SessionContext));
             }
             catch (Exception ex)
             {
-                _smtpServer.OnSessionFaulted(new SessionFaultedEventArgs(handle.SessionContext, ex));
+                _pop3Server.OnSessionFaulted(new SessionFaultedEventArgs(handle.SessionContext, ex));
             }
             finally
             {
@@ -62,7 +62,7 @@ namespace Pop3Server
             }
         }
 
-        async Task UpgradeAsync(SmtpSessionHandle handle, CancellationToken cancellationToken)
+        async Task UpgradeAsync(Pop3SessionHandle handle, CancellationToken cancellationToken)
         {
             var endpoint = handle.SessionContext.EndpointDefinition;
 
@@ -86,7 +86,7 @@ namespace Pop3Server
             return Task.WhenAll(tasks);
         }
 
-        void Add(SmtpSessionHandle handle)
+        void Add(Pop3SessionHandle handle)
         {
             lock (_sessionsLock)
             {
@@ -94,7 +94,7 @@ namespace Pop3Server
             }
         }
 
-        void Remove(SmtpSessionHandle handle)
+        void Remove(Pop3SessionHandle handle)
         {
             lock (_sessionsLock)
             {
@@ -102,9 +102,9 @@ namespace Pop3Server
             }
         }
 
-        class SmtpSessionHandle
+        class Pop3SessionHandle
         {
-            public SmtpSessionHandle(SmtpSession session, SmtpSessionContext sessionContext)
+            public Pop3SessionHandle(SmtpSession session, SmtpSessionContext sessionContext)
             {
                 Session = session;
                 SessionContext = sessionContext;

@@ -34,7 +34,7 @@ namespace Pop3Server
         /// <summary>
         /// Gets the options that the server was created with.
         /// </summary>
-        ISmtpServerOptions ServerOptions { get; }
+        IPop3ServerOptions ServerOptions { get; }
 
         /// <summary>
         /// Gets the endpoint definition.

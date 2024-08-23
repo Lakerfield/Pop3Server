@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Pop3Server
 {
-    public interface ISmtpServerOptions
+    public interface IPop3ServerOptions
     {
         /// <summary>
         /// Gets the maximum size of a message.

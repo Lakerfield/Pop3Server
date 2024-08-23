@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace Pop3Server
 {
-    public sealed class SmtpServerOptionsBuilder
+    public sealed class Pop3ServerOptionsBuilder
     {
-        readonly List<Action<SmtpServerOptions>> _setters = new List<Action<SmtpServerOptions>>();
+        readonly List<Action<Pop3ServerOptions>> _setters = new List<Action<Pop3ServerOptions>>();
 
         /// <summary>
         /// Builds the options that have been set and returns the built instance.
         /// </summary>
         /// <returns>The server options that have been set.</returns>
-        public ISmtpServerOptions Build()
+        public IPop3ServerOptions Build()
         {
-            var serverOptions = new SmtpServerOptions
+            var serverOptions = new Pop3ServerOptions
             {
                 Endpoints = new List<IEndpointDefinition>(),
                 MaxRetryCount = 5,
@@ -32,7 +32,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The name of the server.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder ServerName(string value)
+        public Pop3ServerOptionsBuilder ServerName(string value)
         {
             _setters.Add(options => options.ServerName = value);
 
@@ -44,7 +44,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The endpoint to listen on.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder Endpoint(IEndpointDefinition value)
+        public Pop3ServerOptionsBuilder Endpoint(IEndpointDefinition value)
         {
             _setters.Add(options => options.Endpoints.Add(value));
 
@@ -56,7 +56,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="configure">The endpoint to listen on.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder Endpoint(Action<EndpointDefinitionBuilder> configure)
+        public Pop3ServerOptionsBuilder Endpoint(Action<EndpointDefinitionBuilder> configure)
         {
             var endpointDefinitionBuilder = new EndpointDefinitionBuilder();
             configure(endpointDefinitionBuilder);
@@ -69,7 +69,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="ports">The port to add as the endpoint.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder Port(params int[] ports)
+        public Pop3ServerOptionsBuilder Port(params int[] ports)
         {
             foreach (var port in ports)
             {
@@ -85,7 +85,7 @@ namespace Pop3Server
         /// <param name="port">The port to add as the endpoint.</param>
         /// <param name="isSecure">Indicates whether the port is secure by default.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder Port(int port, bool isSecure)
+        public Pop3ServerOptionsBuilder Port(int port, bool isSecure)
         {
             Endpoint(new EndpointDefinitionBuilder().Port(port).IsSecure(isSecure).Build());
 
@@ -97,7 +97,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The maximum message size to allow.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder MaxMessageSize(int value)
+        public Pop3ServerOptionsBuilder MaxMessageSize(int value)
         {
             _setters.Add(options => options.MaxMessageSize = value);
 
@@ -109,7 +109,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The maximum number of retries allowed for a failed command.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder MaxRetryCount(int value)
+        public Pop3ServerOptionsBuilder MaxRetryCount(int value)
         {
             _setters.Add(options => options.MaxRetryCount = value);
 
@@ -121,7 +121,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The maximum number of authentication attempts for a failed authentication.</param>
         /// <returns>A OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder MaxAuthenticationAttempts(int value)
+        public Pop3ServerOptionsBuilder MaxAuthenticationAttempts(int value)
         {
             _setters.Add(options => options.MaxAuthenticationAttempts = value);
 
@@ -133,7 +133,7 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The buffer size for each read operation.</param>
         /// <returns>An OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder NetworkBufferSize(int value)
+        public Pop3ServerOptionsBuilder NetworkBufferSize(int value)
         {
             _setters.Add(options => options.NetworkBufferSize = value);
 
@@ -145,16 +145,16 @@ namespace Pop3Server
         /// </summary>
         /// <param name="value">The timeout used when waiting for a command from the client.</param>
         /// <returns>An OptionsBuilder to continue building on.</returns>
-        public SmtpServerOptionsBuilder CommandWaitTimeout(TimeSpan value)
+        public Pop3ServerOptionsBuilder CommandWaitTimeout(TimeSpan value)
         {
             _setters.Add(options => options.CommandWaitTimeout = value);
             
             return this;
         }
 
-        #region SmtpServerOptions
+        #region Pop3ServerOptions
 
-        class SmtpServerOptions : ISmtpServerOptions
+        class Pop3ServerOptions : IPop3ServerOptions
         {
             /// <summary>
             /// Gets or sets the maximum size of a message.
@@ -184,7 +184,7 @@ namespace Pop3Server
             /// <summary>
             /// Gets or sets the endpoint to listen on.
             /// </summary>
-            IReadOnlyList<IEndpointDefinition> ISmtpServerOptions.Endpoints => Endpoints;
+            IReadOnlyList<IEndpointDefinition> IPop3ServerOptions.Endpoints => Endpoints;
 
             /// <summary>
             /// The timeout to use when waiting for a command from the client.
