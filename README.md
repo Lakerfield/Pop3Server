@@ -1,10 +1,12 @@
-# Pop3Server
-
 # What is Pop3Server?
+
+[![NuGet](https://img.shields.io/nuget/v/Lakerfield.Pop3Server.svg)](https://www.nuget.org/packages/Lakerfield.Pop3Server/)
 
 Pop3Server is a simple, yet highly functional POP3 server implementation. 
 It is based on the structure of the [SmtpServer](https://github.com/cosullivan/SmtpServer) project by cosullivan, with modifications to implement POP3 instead of SMTP. 
 Written entirely in C#, showcases the potential for a full-featured POP3 server built on .NET.
+
+Pop3Server is available via [NuGet](https://www.nuget.org/packages/Lakerfield.Pop3Server/)
 
 # Acknowledgements
 
