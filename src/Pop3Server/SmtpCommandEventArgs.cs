@@ -1,6 +1,6 @@
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     public sealed class SmtpCommandEventArgs : SessionEventArgs
     {

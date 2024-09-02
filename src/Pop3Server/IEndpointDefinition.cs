@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     public interface IEndpointDefinition
     {

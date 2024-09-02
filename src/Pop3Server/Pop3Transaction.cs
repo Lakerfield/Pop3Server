@@ -1,34 +1,39 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SmtpServer.Mail;
+using Pop3Server.Mail;
+using Pop3Server.StateMachine;
 
-namespace SmtpServer
+namespace Pop3Server
 {
-    internal sealed class SmtpMessageTransaction : IMessageTransaction
+    internal sealed class Pop3Transaction : IPop3Transaction
     {
         /// <summary>
         /// Reset the current transaction.
         /// </summary>
         public void Reset()
         {
-            From = null;
-            To = new Collection<IMailbox>();
+            Mailbox = null;
+            Messages = new Collection<IPop3Message>();
             Parameters = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
         }
 
         /// <summary>
         /// Gets or sets the mailbox that is sending the message.
         /// </summary>
-        public IMailbox From { get; set; }
+        public IMailbox? Mailbox { get; set; }
+
+        public bool HasLockedMailbox { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of mailboxes that the message is to be delivered to.
         /// </summary>
-        public IList<IMailbox> To { get; set; } = new Collection<IMailbox>();
+        public IList<IPop3Message> Messages { get; set; } = new Collection<IPop3Message>();
 
         /// <summary>
         /// The list of parameters that were supplied by the client.
         /// </summary>
         public IReadOnlyDictionary<string, string> Parameters { get; set; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+
+        public SmtpStateId CapaState { get; set; }
     }
 }

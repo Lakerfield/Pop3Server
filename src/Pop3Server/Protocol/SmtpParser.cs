@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using SmtpServer.IO;
-using SmtpServer.Mail;
-using SmtpServer.Text;
+using Pop3Server.IO;
+using Pop3Server.Mail;
+using Pop3Server.Text;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class SmtpParser
     {
@@ -480,8 +480,14 @@ namespace SmtpServer.Protocol
             return true;
           }
 
-          errorResponse = SmtpResponse.SyntaxError;
-          return false;
+          if (TryMakeEnd(ref reader) == false)
+          {
+              errorResponse = SmtpResponse.SyntaxError;
+              return false;
+          }
+
+          command = _smtpCommandFactory.CreateList(0);
+          return true;
         }
 
         /// <summary>
@@ -696,8 +702,14 @@ namespace SmtpServer.Protocol
             return true;
           }
 
-          errorResponse = SmtpResponse.SyntaxError;
-          return false;
+          if (TryMakeEnd(ref reader) == false)
+          {
+              errorResponse = SmtpResponse.SyntaxError;
+              return false;
+          }
+
+          command = _smtpCommandFactory.CreateUidl(0);
+          return true;
         }
 
         /// <summary>
@@ -869,7 +881,7 @@ namespace SmtpServer.Protocol
             // ABNF
             // proxy            = "PROXY" space ( unknown-proxy | tcp4-proxy | tcp6-proxy )
             // unknown-proxy    = "UNKNOWN"
-            // tcp4-proxy       = "TCP4" space ipv4-address-literal space ipv4-address-literal space ip-port-number space ip-port-number   
+            // tcp4-proxy       = "TCP4" space ipv4-address-literal space ipv4-address-literal space ip-port-number space ip-port-number
             // tcp6-proxy       = "TCP6" space ipv6-address-literal space ipv6-address-literal space ip-port-number space ip-port-number
             // space            = " "
             // ip-port          = wnum
@@ -1230,7 +1242,7 @@ namespace SmtpServer.Protocol
             static Mailbox CreateMailbox(ReadOnlySequence<byte> localpart, ReadOnlySequence<byte> domainOrAddress)
             {
                 var user = Regex.Unescape(StringUtil.Create(localpart, Encoding.UTF8).Trim('"'));
-                
+
                 return new Mailbox(user, StringUtil.Create(domainOrAddress));
             }
         }
@@ -2059,7 +2071,7 @@ namespace SmtpServer.Protocol
             {
                 reader.Take();
             }
-            
+
             return true;
         }
 
@@ -2090,7 +2102,7 @@ namespace SmtpServer.Protocol
         public bool TryMakeBase64Chars(ref TokenReader reader)
         {
             var token = reader.Take();
-            
+
             switch (token.Kind)
             {
                 case TokenKind.Text:

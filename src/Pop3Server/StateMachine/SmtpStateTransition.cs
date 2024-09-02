@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.StateMachine
+namespace Pop3Server.StateMachine
 {
     internal sealed class SmtpStateTransition
     {

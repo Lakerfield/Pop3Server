@@ -1,4 +1,4 @@
-﻿namespace SmtpServer.Net
+namespace Pop3Server.Net
 {
     public interface IEndpointListenerFactory
     {

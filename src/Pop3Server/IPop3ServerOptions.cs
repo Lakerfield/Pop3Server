@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace SmtpServer
+namespace Pop3Server
 {
-    public interface ISmtpServerOptions
+    public interface IPop3ServerOptions
     {
         /// <summary>
         /// Gets the maximum size of a message.

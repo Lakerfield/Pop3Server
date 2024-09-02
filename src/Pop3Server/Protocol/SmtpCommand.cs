@@ -1,7 +1,7 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public abstract class SmtpCommand
     {

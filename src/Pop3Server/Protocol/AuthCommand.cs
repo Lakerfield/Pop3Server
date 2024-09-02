@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.IO.Pipelines;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.Authentication;
-using SmtpServer.ComponentModel;
-using SmtpServer.IO;
-using SmtpServer.Storage;
+using Pop3Server.Authentication;
+using Pop3Server.ComponentModel;
+using Pop3Server.IO;
+using Pop3Server.Storage;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class AuthCommand : SmtpCommand
     {
@@ -81,7 +81,7 @@ namespace SmtpServer.Protocol
 
             await context.Pipe.Output.WriteReplyAsync(SmtpResponse.AuthenticationSuccessful, cancellationToken).ConfigureAwait(false);
 
-            context.Authentication = new AuthenticationContext(_user);
+            context.Authentication = new AuthenticationContext(true, _user);
             context.RaiseSessionAuthenticated();
 
             return true;

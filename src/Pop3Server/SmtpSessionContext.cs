@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using SmtpServer.IO;
-using SmtpServer.Protocol;
+using Pop3Server.IO;
+using Pop3Server.Protocol;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     internal sealed class SmtpSessionContext : ISessionContext
     {
@@ -33,12 +33,12 @@ namespace SmtpServer
         /// <param name="serviceProvider">The service provider instance.</param>
         /// <param name="options">The server options.</param>
         /// <param name="endpointDefinition">The endpoint definition.</param>
-        internal SmtpSessionContext(IServiceProvider serviceProvider, ISmtpServerOptions options, IEndpointDefinition endpointDefinition)
+        internal SmtpSessionContext(IServiceProvider serviceProvider, IPop3ServerOptions options, IEndpointDefinition endpointDefinition)
         {
             ServiceProvider = serviceProvider;
             ServerOptions = options;
             EndpointDefinition = endpointDefinition;
-            Transaction = new SmtpMessageTransaction();
+            Transaction = new Pop3Transaction();
             Properties = new Dictionary<string, object>();
         }
 
@@ -85,7 +85,7 @@ namespace SmtpServer
         /// <summary>
         /// Gets the options that the server was created with.
         /// </summary>
-        public ISmtpServerOptions ServerOptions { get; }
+        public IPop3ServerOptions ServerOptions { get; }
 
         /// <summary>
         /// Gets the endpoint definition.
@@ -100,7 +100,7 @@ namespace SmtpServer
         /// <summary>
         /// Gets the current transaction.
         /// </summary>
-        public SmtpMessageTransaction Transaction { get; }
+        public Pop3Transaction Transaction { get; }
         
         /// <summary>
         /// Returns the authentication context.

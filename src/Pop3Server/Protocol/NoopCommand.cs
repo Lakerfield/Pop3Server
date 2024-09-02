@@ -1,8 +1,8 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.IO;
+using Pop3Server.IO;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class NoopCommand : SmtpCommand
     {

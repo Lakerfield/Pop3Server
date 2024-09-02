@@ -1,8 +1,9 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.IO;
+using Pop3Server.IO;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class StatCommand : SmtpCommand
     {
@@ -22,8 +23,10 @@ namespace SmtpServer.Protocol
         /// if the current state is to be maintained.</returns>
         internal override async Task<bool> ExecuteAsync(SmtpSessionContext context, CancellationToken cancellationToken)
         {
+            var count = context.Transaction.Messages.Count;
+            var totalSize = context.Transaction.Messages.Sum(m => m.Size);
 
-            await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, "1 1000"), cancellationToken).ConfigureAwait(false);
+            await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, $"{count} {totalSize}"), cancellationToken).ConfigureAwait(false);
 
             return true;
         }

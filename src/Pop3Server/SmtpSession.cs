@@ -1,16 +1,18 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 using System.Reflection;
-using SmtpServer.IO;
+using Pop3Server.IO;
 using System.IO.Pipelines;
-using SmtpServer.StateMachine;
-using SmtpServer.ComponentModel;
+using Pop3Server.StateMachine;
+using Pop3Server.ComponentModel;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Linq;
+using Pop3Server.Storage;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     internal sealed class SmtpSession
     {
@@ -66,6 +68,17 @@ namespace SmtpServer
 
                     if (command == null)
                     {
+                        if (context.Transaction.HasLockedMailbox)
+                        {
+                            var mailbox = context.Transaction.Mailbox;
+                            if (mailbox != null)
+                            {
+                                var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
+                                using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
+                                await messageStoreContainer.Instance.UnlockMailboxAsync(context, mailbox, CancellationToken.None);
+                            }
+                        }
+
                         return;
                     }
 
@@ -132,17 +145,16 @@ namespace SmtpServer
                         return Task.CompletedTask;
                     },
                     cancellationTokenSource.Token).ConfigureAwait(false);
-
                 return command;
             }
             catch (OperationCanceledException)
             {
                 if (timeout.IsCancellationRequested)
                 {
-                    throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.ServiceClosingTransmissionChannel, "Timeout while waiting for input."), true);
+                    throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.Err, "Timeout while waiting for input."), true);
                 }
 
-                throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.ServiceClosingTransmissionChannel, "The session has be cancelled."), true);
+                throw new SmtpResponseException(new SmtpResponse(SmtpReplyCode.Err, "The session has be cancelled."), true);
             }
             finally
             {
@@ -159,7 +171,7 @@ namespace SmtpServer
         /// <returns>The response that wraps the original response with the additional error information.</returns>
         static SmtpResponse CreateErrorResponse(SmtpResponse response, int retries)
         {
-            return new SmtpResponse(response.ReplyCode, $"-ERR {response.Message}, {retries} retry(ies) remaining.");
+            return new SmtpResponse(SmtpReplyCode.Err, $"{response.Lines.FirstOrDefault()}, {retries} retry(ies) remaining.");
         }
 
         /// <summary>
@@ -190,7 +202,7 @@ namespace SmtpServer
             var version = typeof(SmtpSession).GetTypeInfo().Assembly.GetName().Version;
 
             _context.Pipe.Output.WriteLine($"+OK POP3 server {_context.ServerOptions.ServerName} v{version} ready");
-            
+
             return _context.Pipe.Output.FlushAsync(cancellationToken);
         }
     }

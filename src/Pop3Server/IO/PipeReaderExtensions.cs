@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.IO.Pipelines;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.Text;
+using Pop3Server.Text;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     internal static class PipeReaderExtensions
     {

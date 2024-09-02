@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using SmtpServer.IO;
+using Pop3Server.IO;
 
-namespace SmtpServer
+namespace Pop3Server
 {
     public interface ISessionContext
     {
@@ -34,7 +34,7 @@ namespace SmtpServer
         /// <summary>
         /// Gets the options that the server was created with.
         /// </summary>
-        ISmtpServerOptions ServerOptions { get; }
+        IPop3ServerOptions ServerOptions { get; }
 
         /// <summary>
         /// Gets the endpoint definition.

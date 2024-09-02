@@ -1,8 +1,8 @@
-﻿using System.Net;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     /// <summary>
     /// Support for proxy protocol version 1 header for use with HAProxy.

@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.ComponentModel;
-using SmtpServer.Net;
+using Pop3Server.ComponentModel;
+using Pop3Server.Net;
 
-namespace SmtpServer
+namespace Pop3Server
 {
-    public class SmtpServer
+    public class Pop3Server
     {
         /// <summary>
         /// Raised when a session has been created.
@@ -29,10 +29,10 @@ namespace SmtpServer
         /// </summary>
         public event EventHandler<SessionEventArgs> SessionCancelled;
 
-        readonly ISmtpServerOptions _options;
+        readonly IPop3ServerOptions _options;
         readonly IServiceProvider _serviceProvider;
         readonly IEndpointListenerFactory _endpointListenerFactory;
-        readonly SmtpSessionManager _sessions;
+        readonly Pop3SessionManager _sessions;
         readonly CancellationTokenSource _shutdownTokenSource = new CancellationTokenSource();
         readonly TaskCompletionSource<bool> _shutdownTask = new TaskCompletionSource<bool>();
 
@@ -41,11 +41,11 @@ namespace SmtpServer
         /// </summary>
         /// <param name="options">The SMTP server options.</param>
         /// <param name="serviceProvider">The service provider to use when resolving services.</param>
-        public SmtpServer(ISmtpServerOptions options, IServiceProvider serviceProvider)
+        public Pop3Server(IPop3ServerOptions options, IServiceProvider serviceProvider)
         {
             _options = options;
             _serviceProvider = serviceProvider;
-            _sessions = new SmtpSessionManager(this);
+            _sessions = new Pop3SessionManager(this);
             _endpointListenerFactory = serviceProvider.GetServiceOrDefault(EndpointListenerFactory.Default);
         }
 

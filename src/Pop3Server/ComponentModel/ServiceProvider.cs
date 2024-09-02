@@ -1,10 +1,10 @@
-using SmtpServer.Authentication;
-using SmtpServer.Protocol;
-using SmtpServer.Storage;
+using Pop3Server.Authentication;
+using Pop3Server.Protocol;
+using Pop3Server.Storage;
 using System;
-using SmtpServer.Net;
+using Pop3Server.Net;
 
-namespace SmtpServer.ComponentModel
+namespace Pop3Server.ComponentModel
 {
     public sealed class ServiceProvider : IServiceProvider
     {

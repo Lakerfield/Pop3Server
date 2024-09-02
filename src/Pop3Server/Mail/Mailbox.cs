@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.Mail
+namespace Pop3Server.Mail
 {
     public sealed class Mailbox : IMailbox
     {

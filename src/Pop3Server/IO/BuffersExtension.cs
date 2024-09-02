@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     public static class BuffersExtension
     {

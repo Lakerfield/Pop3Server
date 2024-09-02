@@ -1,4 +1,4 @@
-﻿namespace SmtpServer.Text
+namespace Pop3Server.Text
 {
     public enum TokenKind
     {

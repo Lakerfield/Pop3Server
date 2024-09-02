@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class SmtpResponseException : Exception
     {

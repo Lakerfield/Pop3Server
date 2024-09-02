@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace SmtpServer.ComponentModel
+namespace Pop3Server.ComponentModel
 {
     internal static class ServiceProviderExtensions
     {

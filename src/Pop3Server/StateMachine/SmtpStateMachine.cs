@@ -1,7 +1,7 @@
-using SmtpServer.Protocol;
+using Pop3Server.Protocol;
 using System.Linq;
 
-namespace SmtpServer.StateMachine
+namespace Pop3Server.StateMachine
 {
     internal sealed class SmtpStateMachine 
     {
@@ -37,6 +37,7 @@ namespace SmtpServer.StateMachine
                 return false;
             }
 
+            _context.Transaction.CapaState = _state.StateId;
             _transition = transition;
             return true;
         }

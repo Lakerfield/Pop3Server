@@ -1,4 +1,4 @@
-﻿namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public enum AuthenticationMethod
     {

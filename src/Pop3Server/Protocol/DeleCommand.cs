@@ -1,8 +1,11 @@
+using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
-using SmtpServer.IO;
+using Pop3Server.ComponentModel;
+using Pop3Server.IO;
+using Pop3Server.Storage;
 
-namespace SmtpServer.Protocol
+namespace Pop3Server.Protocol
 {
     public sealed class DeleCommand : SmtpCommand
     {
@@ -27,9 +30,33 @@ namespace SmtpServer.Protocol
         /// if the current state is to be maintained.</returns>
         internal override async Task<bool> ExecuteAsync(SmtpSessionContext context, CancellationToken cancellationToken)
         {
-            await context.Pipe.Output.WriteReplyAsync(SmtpResponse.Ok, cancellationToken).ConfigureAwait(false);
+            var messageStore = context.ServiceProvider.GetService<IMessageStoreFactory, IMessageStore>(context, MessageStore.Default);
+            using var messageStoreContainer = new DisposableContainer<IMessageStore>(messageStore);
+
+            if (Message < 1)
+                goto noSuchMessage;
+            if (Message > context.Transaction.Messages.Count)
+                goto noSuchMessage;
+
+            var message = context.Transaction.Messages[Message - 1];
+            if (message == null)
+                goto noSuchMessage;
+
+            if (message.DeleteRequested == false)
+            {
+                message.DeleteRequested = true;
+                await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, @$"message {Message} deleted"), cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Err, @$"message {Message} already deleted"), cancellationToken).ConfigureAwait(false);
+            }
 
             return true;
+
+            noSuchMessage:
+            await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Err, "no such message"), cancellationToken).ConfigureAwait(false);
+            return false;
         }
     }
 }

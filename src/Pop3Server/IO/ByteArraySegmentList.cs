@@ -1,6 +1,6 @@
-﻿using System.Buffers;
+using System.Buffers;
 
-namespace SmtpServer.IO
+namespace Pop3Server.IO
 {
     internal sealed class ByteArraySegmentList
     {
