@@ -65,34 +65,6 @@ namespace Pop3Server
         }
 
         /// <summary>
-        /// Adds an endpoint with the given port.
-        /// </summary>
-        /// <param name="ports">The port to add as the endpoint.</param>
-        /// <returns>A OptionsBuilder to continue building on.</returns>
-        public Pop3ServerOptionsBuilder Port(params int[] ports)
-        {
-            foreach (var port in ports)
-            {
-                Endpoint(new EndpointDefinitionBuilder().Port(port).Build());
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds an endpoint with the given port.
-        /// </summary>
-        /// <param name="port">The port to add as the endpoint.</param>
-        /// <param name="isSecure">Indicates whether the port is secure by default.</param>
-        /// <returns>A OptionsBuilder to continue building on.</returns>
-        public Pop3ServerOptionsBuilder Port(int port, bool isSecure)
-        {
-            Endpoint(new EndpointDefinitionBuilder().Port(port).IsSecure(isSecure).Build());
-
-            return this;
-        }
-
-        /// <summary>
         /// Sets the maximum message size.
         /// </summary>
         /// <param name="value">The maximum message size to allow.</param>

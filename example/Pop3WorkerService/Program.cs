@@ -27,13 +27,9 @@ namespace Pop3WorkerService
               {
                 var options = new Pop3ServerOptionsBuilder()
                   .ServerName("POP3 Server")
-                  //.Port(9110)
-                  .Endpoint(endpoint =>
-                  {
-                    endpoint
-                      .Port(9110)
-                      .AllowUnsecureAuthentication();
-                  })
+                  .Endpoint(endpoint => endpoint
+                    .Port(9110)
+                    .AllowUnsecureAuthentication())
                   .Build();
 
                 return new Pop3Server.Pop3Server(options, provider.GetRequiredService<IServiceProvider>());
