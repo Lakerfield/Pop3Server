@@ -90,7 +90,7 @@ namespace Pop3Server
         /// <summary>
         /// Sets a value indicating whether authentication should be allowed on an unsecure session.
         /// </summary>
-        /// <param name="value">true if the AUTH command is available on an unsecure session, false if not.</param>
+        /// <param name="value">true if the AUTH/USER/PASS command is available on an unsecure session, false if not.</param>
         /// <returns>A EndpointDefinitionBuilder to continue building on.</returns>
         public EndpointDefinitionBuilder AllowUnsecureAuthentication(bool value = true)
         {

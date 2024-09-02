@@ -51,7 +51,7 @@ namespace Pop3Server.StateMachine
             },
         };
 
-        static bool CanAcceptStls(SmtpSessionContext context)
+        internal static bool CanAcceptStls(SmtpSessionContext context)
         {
             return context.EndpointDefinition.CertificateFactory != null && context.Pipe.IsSecure == false;
         }

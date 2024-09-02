@@ -33,15 +33,15 @@ namespace Pop3Server.Protocol
             {
                 yield return "Capability list follows";
 
+                if (SmtpStateTable.CanAcceptStls(context) && context.Transaction.CapaState == SmtpStateId.Authorization)
+                    yield return "STLS";
+
                 if (context.Transaction.CapaState == SmtpStateId.Authorization)
                 {
                     //yield return "AUTH";
                     yield return "USER";
                     yield return "PASS";
                 }
-
-                if (context.Transaction.CapaState == SmtpStateId.Authorization)
-                    yield return "STLS";
 
                 if (context.Transaction.CapaState == SmtpStateId.AuthorizationWaitForPassword)
                     yield return "PASS";
