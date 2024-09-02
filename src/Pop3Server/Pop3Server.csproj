@@ -4,6 +4,23 @@
 	  <TargetFramework>netstandard2.0</TargetFramework>
 	  <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <Authors>Michael Lakerveld;Cain O'Sullivan</Authors>
+    <Company></Company>
+    <Copyright>2015-2024</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyTitle>Lakerfield.Pop3Server</AssemblyTitle>
+    <Product>Lakerfield.Pop3Server</Product>
+    <PackageId>Lakerfield.Pop3Server</PackageId>
+    <Description>A POP3 server library</Description>
+    <PackageDescription>Pop3Server is a simple, yet highly functional POP3 server implementation. It is based on the structure of the SmtpServer project by cosullivan, with modifications to implement POP3 instead of SMTP. Written entirely in C#, showcases the potential for a full-featured POP3 server built on .NET.</PackageDescription>
+    <PackageTags>pop3; mail; pop3server</PackageTags>
+    <IsPackable>true</IsPackable>
+    <RepositoryUrl>https://github.com/Lakerfield/pop3server</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>false</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,5 +34,10 @@
 	<ItemGroup>
 		<PackageReference Include="System.IO.Pipelines" Version="4.7.2" />
 	</ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath=""/>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+  </ItemGroup>
 
 </Project>
