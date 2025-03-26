@@ -16,6 +16,18 @@ Special thanks to [cosullivan](https://github.com/cosullivan) for the original S
 
 This project is in its early stages and is a proof of concept for a POP3 server. The code structure and architecture have been adapted from the original SmtpServer project to support POP3.
 
+# Roadmap
+
+## Current Status
+- ✅ Proof of concept succeeded
+- ⚙️ In development for a real-world internal use case
+- 🚫 Not recommended (yet) for internet-facing deployment
+
+## Upcoming Features and Improvements
+- [ ] Add support for dot-stuffing (`.` transparency) as per RFC1939
+- [ ] Rename and refactor inherited SMTP-related class names
+- [ ] Merge latest updates from [cosullivan/SmtpServer](https://github.com/cosullivan/SmtpServer)
+
 # How can it be used?
 
 To get the Pop3Server up and running, you can follow this example from the included project in the `example\Pop3WorkerService` folder. Here's how to start the server:
