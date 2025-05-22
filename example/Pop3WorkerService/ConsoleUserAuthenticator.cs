@@ -12,7 +12,7 @@ namespace Pop3WorkerService
   {
     public Task<bool> AuthenticateAsync(ISessionContext context, string user, string password, CancellationToken cancellationToken)
     {
-      if (user == "test@example.com" && password == "test")
+      if (user == "test@test.com" && password == "test")
         return Task.FromResult(true);
       return Task.FromResult(false);
     }

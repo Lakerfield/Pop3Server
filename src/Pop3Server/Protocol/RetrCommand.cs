@@ -12,6 +12,7 @@ namespace Pop3Server.Protocol
     public sealed class RetrCommand : SmtpCommand
     {
       public const string Command = "RETR";
+      public readonly byte[] Dot = new byte[] { 46 };
 
       public int Message { get; }
 
@@ -50,7 +51,7 @@ namespace Pop3Server.Protocol
 
             await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Ok, @$"message follows {bytes.Length} octets"),cancellationToken).ConfigureAwait(false);
 
-            context.Pipe.Output.Write(bytes);
+            WriteDotStuffed(context, bytes, cancellationToken);
 
             var ending = new byte[] { 13, 10, 46, 13, 10 };
 
@@ -69,5 +70,47 @@ namespace Pop3Server.Protocol
             await context.Pipe.Output.WriteReplyAsync(new SmtpResponse(SmtpReplyCode.Err, "no such message"), cancellationToken).ConfigureAwait(false);
             return false;
         }
+
+        private void WriteDotStuffed(SmtpSessionContext context, byte[] data, CancellationToken cancellationToken)
+        {
+          var remaining = new ReadOnlySpan<byte>(data);
+
+          var index = remaining.IndexOfNewLine();
+          while (index >= 0)
+          {
+            if (cancellationToken.IsCancellationRequested)
+              return;
+            var line = remaining.Slice(0, index + 2);
+            if (line.Length > 0 && line.StartsWith(Dot))
+              context.Pipe.Output.Write(Dot);
+            context.Pipe.Output.Write(line);
+
+            remaining = remaining.Slice(index + 2);
+
+            index = remaining.IndexOfNewLine();
+          }
+          context.Pipe.Output.Write(remaining);
+        }
+
+    }
+
+    public static class SpanExtensions
+    {
+      public static int IndexOfNewLine(this ReadOnlySpan<byte> span, char first = (char)13, char second = (char)10)
+      {
+        var maxLength = span.Length - 1;
+        for (int i = 0; i < maxLength; i++)
+          if (span[i] == first && span[i + 1] == second)
+            return i;
+        return -1;
+      }
+
+      public static int IndexOfPair(ReadOnlySpan<char> span, char first, char second)
+      {
+        for (int i = 0; i < span.Length - 1; i++)
+          if (span[i] == first && span[i + 1] == second)
+            return i;
+        return -1;
+      }
     }
 }

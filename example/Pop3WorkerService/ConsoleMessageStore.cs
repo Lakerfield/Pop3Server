@@ -39,6 +39,23 @@ Content-Type: text/plain; charset=UTF-8
 
 This is a another test.
 """));
+
+      _messages.Add(new ExampleMessage("unique-id3", """
+Date: Mon, 02 Sep 2024 11:00:00 +0000
+From: another.sender@example.com
+To: test@example.com
+Subject: Hello world again
+Message-ID: <unique-id3@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+This is a another test. With
+some .dots. in it.
+.at different places
+ .
+bye
+"""));
+
     }
 
     public override Task<bool> LockMailboxAsync(ISessionContext context, IMailbox mailbox, CancellationToken cancellationToken)
