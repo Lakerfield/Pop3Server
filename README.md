@@ -24,7 +24,7 @@ This project is in its early stages and is a proof of concept for a POP3 server.
 - 🚫 Not recommended (yet) for internet-facing deployment
 
 ## Upcoming Features and Improvements
-- [ ] Add support for dot-stuffing (`.` transparency) as per RFC1939
+- ✅ Add support for dot-stuffing (`.` transparency) as per RFC1939
 - [ ] Rename and refactor inherited SMTP-related class names
 - [ ] Merge latest updates from [cosullivan/SmtpServer](https://github.com/cosullivan/SmtpServer)
 
