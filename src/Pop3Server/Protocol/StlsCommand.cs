@@ -23,9 +23,27 @@ namespace Pop3Server.Protocol
         /// if the current state is to be maintained.</returns>
         internal override async Task<bool> ExecuteAsync(SmtpSessionContext context, CancellationToken cancellationToken)
         {
-            await context.Pipe.Output.WriteReplyAsync(SmtpResponse.BeginTlsNegotiation, cancellationToken).ConfigureAwait(false);
+            if (context.Pipe.IsSecure)
+            {
+                await context.Pipe.Output.WriteReplyAsync(SmtpResponse.TlsAlreadyActive, cancellationToken).ConfigureAwait(false);
+                return false;
+            }
 
-            var certificate = context.EndpointDefinition.CertificateFactory.GetServerCertificate(context);
+            var certificateFactory = context.EndpointDefinition.CertificateFactory;
+            if (certificateFactory == null)
+            {
+                await context.Pipe.Output.WriteReplyAsync(SmtpResponse.TlsNotAvailable, cancellationToken).ConfigureAwait(false);
+                return false;
+            }
+
+            var certificate = certificateFactory.GetServerCertificate(context);
+            if (certificate == null)
+            {
+                await context.Pipe.Output.WriteReplyAsync(SmtpResponse.TlsNotAvailable, cancellationToken).ConfigureAwait(false);
+                return false;
+            }
+
+            await context.Pipe.Output.WriteReplyAsync(SmtpResponse.BeginTlsNegotiation, cancellationToken).ConfigureAwait(false);
 
             var protocols = context.EndpointDefinition.SupportedSslProtocols;
 

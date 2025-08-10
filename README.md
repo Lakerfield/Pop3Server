@@ -48,6 +48,30 @@ var pop3Server = new Pop3Server.Pop3Server(options, serviceProvider);
 await pop3Server.StartAsync(CancellationToken.None);
 ```
 
+## TLS Support
+
+Pop3Server supports securing connections with TLS. To listen on a TLS-only port (for example, POP3S on port 995) provide a certificate and mark the endpoint as secure:
+
+```cs
+var options = new Pop3ServerOptionsBuilder()
+  .ServerName("POP3 Server")
+  .Endpoint(endpoint => endpoint
+    .Port(995, isSecure: true)
+    .Certificate(new X509Certificate2("server.pfx", "password")))
+  .Build();
+```
+
+Alternatively, you can allow clients to upgrade an existing connection using the `STLS` command by configuring a certificate on a non-secure port:
+
+```cs
+var options = new Pop3ServerOptionsBuilder()
+  .ServerName("POP3 Server")
+  .Endpoint(endpoint => endpoint
+    .Port(110)
+    .Certificate(new X509Certificate2("server.pfx", "password")))
+  .Build();
+```
+
 # Available Features
 
 Pop3Server currently supports the following POP3 commands:
