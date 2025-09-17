@@ -62,7 +62,7 @@ namespace Pop3Server.Text
             _peek = default;
             _hasPeeked = false;
         }
-        
+
         /// <summary>
         /// Create a checkpoint of the current state.
         /// </summary>
@@ -266,6 +266,9 @@ namespace Pop3Server.Text
 
                 case { } ch when ch == '-':
                     return new Token(TokenKind.Hyphen, ReadOne());
+
+                case { } ch when ch == '_':
+                    return new Token(TokenKind.Underscore, ReadOne());
 
                 case { } ch when ch == '.':
                     return new Token(TokenKind.Period, ReadOne());

@@ -2171,6 +2171,7 @@ namespace Pop3Server.Protocol
             case TokenKind.Number:
             case TokenKind.Space:
             case TokenKind.Hyphen:
+            case TokenKind.Underscore:
             case TokenKind.Period:
             case TokenKind.LeftBracket:
             case TokenKind.RightBracket:

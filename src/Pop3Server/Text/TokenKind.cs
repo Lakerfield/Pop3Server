@@ -26,7 +26,12 @@ namespace Pop3Server.Text
         /// -
         /// </summary>
         Hyphen,
-        
+
+        /// <summary>
+        /// _
+        /// </summary>
+        Underscore,
+
         /// <summary>
         /// .
         /// </summary>
@@ -55,7 +60,7 @@ namespace Pop3Server.Text
         /// <summary>
         /// <
         /// </summary>
-        LessThan = 10,
+        LessThan,
 
         /// <summary>
         /// ,
