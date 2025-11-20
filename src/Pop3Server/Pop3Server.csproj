@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>netstandard2.0</TargetFramework>
-	  <LangVersion>8.0</LangVersion>
+	  <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Authors>Michael Lakerveld;Cain O'Sullivan</Authors>
     <Company></Company>
@@ -32,12 +32,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.IO.Pipelines" Version="4.7.2" />
+		<PackageReference Include="System.IO.Pipelines" Version="10.0.0" />
 	</ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md" Pack="true" PackagePath=""/>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+    <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
