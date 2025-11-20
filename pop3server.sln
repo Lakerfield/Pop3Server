@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pop3Server.Hosting", "src\P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pop3WorkerService", "example\Pop3WorkerService\Pop3WorkerService.csproj", "{C9396ED5-8C25-413B-8B29-9FB65F0CBC4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pop3Server.Test", "src\Pop3Server.Test\Pop3Server.Test.csproj", "{AFE421B8-5D33-0ED7-22C7-C7B97A465E80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C9396ED5-8C25-413B-8B29-9FB65F0CBC4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9396ED5-8C25-413B-8B29-9FB65F0CBC4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9396ED5-8C25-413B-8B29-9FB65F0CBC4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE421B8-5D33-0ED7-22C7-C7B97A465E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE421B8-5D33-0ED7-22C7-C7B97A465E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE421B8-5D33-0ED7-22C7-C7B97A465E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE421B8-5D33-0ED7-22C7-C7B97A465E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
