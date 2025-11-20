@@ -8,29 +8,6 @@ using Pop3Server.Storage;
 
 namespace Pop3Server.Protocol
 {
-  public static class ASCII
-  {
-    /// <summary>
-    /// Carriage return (CR)
-    /// </summary>
-    public const byte CR = 13;
-
-    /// <summary>
-    /// Line feed (LF)
-    /// </summary>
-    public const byte LF = 10;
-
-    /// <summary>
-    /// dot (.)
-    /// </summary>
-    public const byte Dot = 46;
-
-    public static readonly byte[] DotArray = new byte[] { ASCII.Dot };
-    public static readonly byte[] CrLfArray = new byte[] { ASCII.CR, ASCII.LF };
-    public const string NewLine = "\r\n";
-    public const int NewLineLength = 2;
-  }
-
   public sealed class TopCommand : SmtpCommand
   {
     public const string Command = "TOP";
@@ -115,7 +92,7 @@ namespace Pop3Server.Protocol
         {
           inBody = true;
 
-          // Diese Zeile MUSS IMMER geschrieben werden (RFC-konform)
+          // This line MUST ALWAYS be written (RFC-compliant)
           if (line.StartsWith(ASCII.DotArray))
             context.Pipe.Output.Write(ASCII.DotArray);
 
