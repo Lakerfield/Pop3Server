@@ -4,6 +4,8 @@ namespace Pop3Server.Protocol
     {
         public static readonly SmtpResponse Ok = new SmtpResponse(SmtpReplyCode.Ok, "Ok");
         public static readonly SmtpResponse BeginTlsNegotiation = new SmtpResponse(SmtpReplyCode.Ok, "Begin TLS negotiation");
+        public static readonly SmtpResponse TlsNotAvailable = new SmtpResponse(SmtpReplyCode.Err, "TLS not available");
+        public static readonly SmtpResponse TlsAlreadyActive = new SmtpResponse(SmtpReplyCode.Err, "TLS already active");
         //public static readonly SmtpResponse ServiceReady = new SmtpResponse(SmtpReplyCode.ServiceReady, "ready when you are");
         public static readonly SmtpResponse MailboxLocked = new SmtpResponse(SmtpReplyCode.Ok, "mailbox locked and loaded");
         public static readonly SmtpResponse UnableToLockMailbox = new SmtpResponse(SmtpReplyCode.Err, "unable to lock mailbox");
